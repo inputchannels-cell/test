@@ -1,20 +1,28 @@
 pipeline {
     agent any
-
+    environment {
+        IMAGE_NAME = 'inaputchannels-cell/test'
+    }
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo 'Building the app'
+                get branch 'main', url: 'https://github.com/inputchannels-cell/test'
             }
         }
-        stage('Test'){
+        stage('Build Docker image'){
             steps {
-                echo 'Running tests'
+                bat "docker build -t %IMAGE_NAME%:latest ."
             }
         }
-        stage('Deploy'){
+        stage('Push to Dockerhub'){
             steps {
-                echo 'Deploying the app'
+                withCredentials([usernamwPassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS)]){
+                    bat """
+                    echo %DOCKER_PASS% |
+                    docker login -u %DOCKER_USER% --password-stdin
+                    docker push %IMAGE_NAME%: latest
+                    docker logout
+                    """
             }
         }
     }
