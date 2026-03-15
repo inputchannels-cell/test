@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                get branch 'main', url: 'https://github.com/inputchannels-cell/test'
+                get branch: 'main', url: 'https://github.com/inputchannels-cell/test'
             }
         }
         stage('Build Docker image'){
