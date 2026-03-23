@@ -1,12 +1,9 @@
-From python:3.10-slim
+FROM python:3.10-slim
 
 WORKDIR /app
 
-copy requirements.txt requirement.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
 COPY . .
 
-EXPOSE 5000
+RUN pip install --no-cache-dir flask
 
 CMD ["python", "app.py"]
