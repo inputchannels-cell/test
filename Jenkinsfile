@@ -3,9 +3,9 @@ pipeline {
     environment {
         IMAGE_NAME = 'inaputchannels-cell/test'
     }
-    stages {
-        stage('Checkout') {
-            steps {
+    stages{
+        stage('Checkout'){
+            steps{
                 get branch: 'main', url: 'https://github.com/inputchannels-cell/test'
             }
         }
@@ -15,8 +15,8 @@ pipeline {
             }
         }
         stage('Push to Dockerhub'){
-            steps {
-                withCredentials([usernamwPassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS)]){
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS)]){
                     bat """
                     echo %DOCKER_PASS% |
                     docker login -u %DOCKER_USER% --password-stdin
